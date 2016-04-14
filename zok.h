@@ -5,9 +5,13 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<unistd.h>
+#include<fcntl.h>
 
 #define ZOK_OK 0
 #define ZOK_ERR -1
+
+#include "version.h"
 
 typedef struct Object{
     void *val;
@@ -15,7 +19,6 @@ typedef struct Object{
 
 typedef struct {
     int id;
-    zCommand *command;
 
 } zokClient;
 

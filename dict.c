@@ -124,16 +124,62 @@ int dictAdd(dict *d, void *key, void *val, int ttl) {
 
 /* delete dict key -> val */
 int dictDelete(dict *d, void *key) {
-    return DICT_OK;
+    unsigned int h;
+    h = dictHashKey(d, key) & d->sizemask;
+
+    dictNode *dn, *dnp;
+    dn = d->table[h];
+    dnp = NULL;
+    while(dn) {
+        if(strcmp(dn->key, key) == 0) {
+            if(dnp) {
+                dnp->next = dn->next;
+            } else {
+                d->table[h] = dn->next;
+            }
+            free(dn);
+            d->used--;
+            return DICT_OK;
+        }
+        dnp = dn;
+        dn = dn->next;
+    }
+
+    return DICT_ERR;
 }
 
 /* find dict key -> val */
 dictNode *dictFind(dict *d, void *key) {
+    unsigned int h;
+    h = dictHashKey(d, key) & d->sizemask;
+    dictNode *dn;
+    dn = d->table[h];
+    while(dn) {
+        if (strcmp(dn->key, key) == 0) {
+            return dn;
+        }
+        dn = dn->next;
+    }
+
     return NULL;
 }
 
 /* free dict */
 int dictRelease(dict *d) {
+    for (int i = 0; i < d->size && d->used > 0; i++) {
+        if(d->table[i] == NULL) continue;
+
+        dictNode *dn, *nextDn;
+        dn = d->table[i];
+        while(dn) {
+            nextDn = dn->next;
+            free(dn);
+            d->used--;
+            dn = nextDn;
+        }
+    }
+    free(d->table);
+    free(d);
     return DICT_OK;
 }
 
