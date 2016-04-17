@@ -33,7 +33,7 @@ typedef struct{
 typedef struct{
     pid_t pid;
     zobj *obj;
-
+    int port;
 } zokServer;
 
 /* exec command function */

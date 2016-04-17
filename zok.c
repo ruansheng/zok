@@ -22,7 +22,17 @@ zCommand commandTables[] ={
  * echo zok version
  */
 void version() {
+    printf("zok server version %s \n", ZOK_VERSION);
+    exit(0);
+}
 
+/**
+ * echo zok help
+ */
+void usage() {
+    printf("Usage: ./zok-server -v or --version\n");
+    printf("       ./zok-server -p 9527 or --port 9527\n");
+    exit(0);
 }
 
 /**
@@ -52,7 +62,25 @@ void daemonize() {
 
 int main(int argc, char **argv) {
     if(argc >= 2) {
+        if(strcmp(argv[1] ,"-v") == 0 || strcmp(argv[1] ,"--version") == 0) {
+            version();
+        }
+        if(strcmp(argv[1] ,"-h") == 0 || strcmp(argv[1] ,"--help") == 0) {
+            usage();
+        }
 
+        if(strcmp(argv[1] ,"-p") == 0 || strcmp(argv[1] ,"--port") == 0) {
+            if(argc >= 3) {
+                server.port = atoi(argv[2]);
+            } else {
+                printf("params is loss \n");
+                exit(1);
+            }
+        } else {
+            printf("params is loss \n");
+            exit(1);
+        }
+        printf("port=%d\n", server.port);
     }
 
     daemonize();
