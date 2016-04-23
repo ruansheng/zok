@@ -60,6 +60,14 @@ void daemonize() {
     }
 }
 
+/**
+ * initServer
+ */
+void initServer(zokServer *server) {
+    server->pid = 0;
+    server->event = (event *)malloc(sizeof(event));
+}
+
 int main(int argc, char **argv) {
     if(argc >= 2) {
         if(strcmp(argv[1] ,"-v") == 0 || strcmp(argv[1] ,"--version") == 0) {
@@ -83,10 +91,10 @@ int main(int argc, char **argv) {
         printf("port=%d\n", server.port);
     }
 
-    daemonize();
+    initServer(&server);
 
-    for(;;) {
-        printf("s\n");
-    }
+    daemonize();
+    loop(server.event);
+
     return ZOK_OK;
 }

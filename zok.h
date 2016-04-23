@@ -11,6 +11,7 @@
 #define ZOK_OK 0
 #define ZOK_ERR -1
 
+#include "net.h"
 #include "version.h"
 
 typedef struct Object{
@@ -32,7 +33,7 @@ typedef struct{
 
 typedef struct{
     pid_t pid;
-    zobj *obj;
+    event *event;
     int port;
 } zokServer;
 
@@ -46,3 +47,5 @@ void ttlCommand(zokClient *c);
 /* system  */
 void pingCommand(zokClient *c);
 void infoCommand(zokClient *c);
+
+void initServer(zokServer *server);
