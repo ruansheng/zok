@@ -4,4 +4,4 @@
 #include<stdio.h>
 #include<time.h>
 
-void logger(int line, const char *level, const char *msg);
+void logger(int mode, int line, const char *level, const char *msg);
