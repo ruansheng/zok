@@ -9,9 +9,9 @@
  * loop
  */
 void netMain(event *ev) {
-    int listenfd = socket_create();
-    int port = atoi(argv[1]);
-    socket_bind(listenfd, "127.0.0.1", port);
-    socket_listen(listenfd);
-    do_event(listenfd);
+    //int listenfd = socket_create();
+    //int port = atoi(argv[1]);
+    //socket_bind(listenfd, "127.0.0.1", port);
+    //socket_listen(listenfd);
+    //do_event(listenfd);
 }
