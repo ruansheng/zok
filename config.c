@@ -32,7 +32,9 @@ char * stringCat(char *s, char *t) {
     int lLen = strlen(t);
     char *newString = (char *)malloc(sLen + lLen);
     memcpy(newString, s, sLen);
+    printf("%s\n", newString);
     memcpy(newString + sLen, t, lLen);
+    printf("%s\n", newString);
     return newString;
 }
 
