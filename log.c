@@ -8,8 +8,9 @@ void logger(int line, const char *level, const char *msg) {
     time_t timep;
     time(&timep);
     p = localtime(&timep);
-    char *time = sprintf("%d-%d-%d %d:%d:%d", (p->tm_year + 1900), (p->tm_mon + 1), p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
-    printf(time);
-    //char *log_line = sprintf("[%s] line %d [%d]:%s", time, level, line, msg);
-    //printf(log_line);
+    char *time;
+    sprintf(time, "%d-%d-%d %d:%d:%d", (p->tm_year + 1900), (p->tm_mon + 1), p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
+    char *log_line;
+    sprintf(log_line, "[%s] line %d [%d]:%s", time, level, line, msg);
+    printf(log_line);
 }
