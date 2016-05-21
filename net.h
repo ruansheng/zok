@@ -15,4 +15,4 @@ typedef struct event {
 /**
  * netMain
  */
-void netMain(event *ev);
+void netMain(zokServer *server);

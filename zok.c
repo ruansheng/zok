@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
         daemonize();
     }
 
-    netMain(server.event);
+    netMain(server);
 
     return ZOK_OK;
 }
