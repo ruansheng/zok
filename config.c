@@ -5,7 +5,7 @@
 #include"config.h"
 
 void loadConfig(const char *filename) {
-    char *config;
+    char *config = NULL;
     char buf[ZOK_CONFIGLINE_MAX + 1];
     if(filename) {
         FILE *fp;
