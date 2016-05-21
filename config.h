@@ -4,6 +4,7 @@
 
 #include<stdio.h>
 #include<string.h>
+#include<stlib.h>
 
 #define ZOK_CONFIGLINE_MAX 1024
 
