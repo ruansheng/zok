@@ -55,6 +55,7 @@ void listen_socket(event *ev) {
  * loop
  */
 void loop(event *ev) {
+    printf("aaa\n");
     /*
     init_socket(ev);
     create_bind_socket(ev);

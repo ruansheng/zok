@@ -93,8 +93,7 @@ int main(int argc, char **argv) {
 
     initServer(&server);
 
-    daemonize();
+    //daemonize();
     loop(server.event);
-
     return ZOK_OK;
 }
