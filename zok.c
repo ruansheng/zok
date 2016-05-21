@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 
         int i;
         for(i = 1; i < argc; i++) {
-            if(argc == i) {
+            if(argc == (i + 1)) {
                 break;
             }
             if(strcmp(argv[i] ,"-d") == 0 || strcmp(argv[i] ,"--daemon") == 0) {
