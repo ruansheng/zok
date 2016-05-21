@@ -118,6 +118,9 @@ int main(int argc, char **argv) {
                 } else if(strcmp(argv[i + 1] ,"false") == 0) {
                     server.daemonize = 0;
                     i++;
+                } else {
+                    printf("cli params -d is error \n");
+                    exit(1);
                 }
             } else if(strcmp(argv[i] ,"-c") == 0 || strcmp(argv[i] ,"--conf") == 0) {
                 server.conf_filename = argv[i + 1];
