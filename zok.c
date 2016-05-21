@@ -109,7 +109,8 @@ int main(int argc, char **argv) {
         int i;
         for(i = 1; i < argc; i++) {
             if(argc == (i + 1)) {
-                break;
+                printf("cli params is error \n");
+                exit(1);
             }
             if(strcmp(argv[i] ,"-d") == 0 || strcmp(argv[i] ,"--daemon") == 0) {
                 if(strcmp(argv[i + 1] ,"true") == 0) {
