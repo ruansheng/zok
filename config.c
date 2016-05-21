@@ -17,9 +17,7 @@ void loadConfig(const char *filename) {
                 exit(1);
             }
         }
-        printf("1---%s \n", buf);
         while(fgets(buf, ZOK_CONFIGLINE_MAX + 1, fp) != NULL) {
-            printf("2---%s \n", buf);
             config = stringCat(config, buf);
         }
         if (fp != stdin) {
@@ -34,9 +32,7 @@ char * stringCat(char *s, char *t) {
     int lLen = strlen(t);
     char *newString = (char *)malloc(sLen + lLen);
     memcpy(newString, s, sLen);
-    printf("%s\n", newString);
     memcpy(newString + sLen, t, lLen);
-    printf("%s\n", newString);
     return newString;
 }
 
