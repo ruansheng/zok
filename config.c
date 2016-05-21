@@ -13,7 +13,7 @@ void loadConfig(const char *filename) {
             fp = __stdinp;
         } else {
             if ((fp = fopen(filename,"r")) == NULL) {
-                perror("Fatal error, can't open config file '%s'", filename);
+                printf("Fatal error, can't open config file '%s'", filename);
                 exit(1);
             }
         }
