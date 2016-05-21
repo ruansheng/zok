@@ -72,6 +72,30 @@ void initServer(zokServer *server) {
     server->event = (event *)malloc(sizeof(event));
 }
 
+void setCommand(zokClient *c) {
+
+}
+
+void getCommand(zokClient *c) {
+
+}
+
+void delCommand(zokClient *c) {
+
+}
+
+void ttlCommand(zokClient *c) {
+
+}
+
+void pingCommand(zokClient *c) {
+
+}
+
+void infoCommand(zokClient *c) {
+
+}
+
 int main(int argc, char **argv) {
     initServer(&server);
     if(argc >= 2) {
