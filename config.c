@@ -17,7 +17,9 @@ void loadConfig(const char *filename) {
                 exit(1);
             }
         }
+        printf("1---%s \n", buf);
         while(fgets(buf, ZOK_CONFIGLINE_MAX + 1, fp) != NULL) {
+            printf("2---%s \n", buf);
             config = stringCat(config, buf);
         }
         if (fp != stdin) {
