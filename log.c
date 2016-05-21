@@ -17,10 +17,9 @@ void logger(int mode, const char *file, int line, const char *level, const char 
         printf("[%s] file:%s line %d [%s]:%s\n", time, file, line, level, msg);
     } else {
         FILE *handler;
-        handler=fopen(filepath,"at+");
-        if(handler==NULL){
-            return -1;
+        handler=fopen(LOG_FILENAME, "at+");
+        if(handler != NULL){
+            fprintf(handler, "[%s] file:%s line %d [%s]:%s\n", time, file, line, level, msg);
         }
-        fprintf(handler, "[%s] file:%s line %d [%s]:%s\n", time, file, line, level, msg);
     }
 }
