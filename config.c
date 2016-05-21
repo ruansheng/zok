@@ -10,7 +10,7 @@ void loadConfig(const char *filename) {
     if(filename) {
         FILE *fp;
         if(filename[0] == '-' && filename[1] == '\0') {
-            fp = __stdinp;
+            fp = stdin;
         } else {
             if ((fp = fopen(filename, "r")) == NULL) {
                 printf("Fatal error, can't open config file '%s'", filename);
@@ -20,7 +20,7 @@ void loadConfig(const char *filename) {
         while(fgets(buf, ZOK_CONFIGLINE_MAX + 1, fp) != NULL) {
             config = stringCat(config, buf);
         }
-        if (fp != __stdinp) {
+        if (fp != stdin) {
             fclose(fp);
         }
         printf("%s \n", config);
