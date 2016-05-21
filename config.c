@@ -5,7 +5,7 @@
 #include"config.h"
 
 void loadConfig(const char *filename) {
-    char *config = NULL;
+    char *config = (char *)malloc(1);
     char buf[ZOK_CONFIGLINE_MAX + 1];
     if(filename) {
         FILE *fp;
