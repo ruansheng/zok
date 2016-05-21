@@ -69,6 +69,7 @@ void initServer(zokServer *server) {
     server->host = ZOK_HOST;
     server->port = ZOK_PORT;
     server->daemonize = 0;
+    server->conf_filename = NULL;
     server->event = (event *)malloc(sizeof(event));
 }
 
