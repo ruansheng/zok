@@ -7,10 +7,9 @@
 /**
  * loop
  */
-void netMain(zokServer *server) {
-    int listenfd = socket_create();
-    int port = atoi(argv[1]);
-    socket_bind(listenfd, server->host, server->port);
-    socket_listen(listenfd);
-    do_event(listenfd);
+void netMain(zokAddr *zokaddr, event *ev) {
+    ev->fd = socket_create();
+    socket_bind(ev->fd, zokaddr->host, zokaddr->port);
+    socket_listen(ev->fd);
+    do_event(ev->fd);
 }

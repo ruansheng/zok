@@ -59,15 +59,18 @@ void daemonize() {
         dup2(fd, 2);
         if (fd > 2) close(fd);
     }
+
+    server.pid = pid;
 }
 
 /**
  * initServer
  */
 void initServer(zokServer *server) {
-    server->pid = 0;
-    server->host = ZOK_HOST;
-    server->port = ZOK_PORT;
+    server->pid = getpid();
+    server->zokaddr = (zokAddr *)malloc(sizeof(zokAddr));
+    server->zokaddr->host = ZOK_HOST;
+    server->zokAddr->port = ZOK_PORT;
     server->daemonize = 0;
     server->conf_filename = NULL;
     server->event = (event *)malloc(sizeof(event));
@@ -134,15 +137,11 @@ int main(int argc, char **argv) {
         }
     }
 
-    printf("%s \n", server.conf_filename);
-
-    exit(ZOK_OK);
-
     if(server.daemonize) {
         daemonize();
     }
 
-    netMain(server);
+    netMain(server.zokaddr, server.event);
 
     return ZOK_OK;
 }

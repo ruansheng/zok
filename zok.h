@@ -7,6 +7,7 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<unistd.h>
 
 #define ZOK_OK 0
 #define ZOK_ERR -1
@@ -32,8 +33,7 @@ typedef struct{
 
 typedef struct{
     pid_t pid;
-    char *host;
-    int port;
+    zokAddr *zokaddr;
     event *event;
     int daemonize;
     char *conf_filename;
