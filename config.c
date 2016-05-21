@@ -6,18 +6,18 @@
 
 void loadConfig(const char *filename) {
     char *config;
-    char bug[ZOK_CONFIGLINE_MAX + 1];
+    char buf[ZOK_CONFIGLINE_MAX + 1];
     if(filename) {
         FILE *fp;
         if(filename[0] == '-' && filename[1] == '\0') {
             fp = __stdinp;
         } else {
-            if ((fp = fopen(filename,"r")) == NULL) {
+            if ((fp = fopen(filename, "r")) == NULL) {
                 printf("Fatal error, can't open config file '%s'", filename);
                 exit(1);
             }
         }
-        while(fgets(buf,REDIS_CONFIGLINE_MAX+1,fp) != NULL) {
+        while(fgets(buf, ZOK_CONFIGLINE_MAX + 1, fp) != NULL) {
             config = stringCat(config, buf);
         }
         if (fp != __stdinp) {
