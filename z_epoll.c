@@ -5,7 +5,6 @@
 #include "z_epoll.h"
 
 int socket_create() {
-    struct sockaddr_in servaddr;
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
     if(listenfd == -1) {
         perror("socket error.\n");
@@ -15,6 +14,7 @@ int socket_create() {
 }
 
 void socket_bind(int listenfd, const char *ip, int port) {
+    struct sockaddr_in servaddr;
     memset(&servaddr, 0, sizeof(struct sockaddr_in));
     servaddr.sin_family = AF_INET;
     inet_pton(AF_INET, ip, &servaddr.sin_addr);
