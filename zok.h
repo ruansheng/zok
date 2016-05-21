@@ -20,7 +20,6 @@ typedef struct Object{
 
 typedef struct {
     int id;
-
 } zokClient;
 
 /* define function pointer */
@@ -33,8 +32,11 @@ typedef struct{
 
 typedef struct{
     pid_t pid;
-    event *event;
+    char *host;
     int port;
+    event *event;
+    int daemonize;
+    char *conf_filename;
 } zokServer;
 
 /* exec command function */

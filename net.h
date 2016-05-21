@@ -2,33 +2,17 @@
 // Created by ruansheng on 16/4/23.
 //
 #include<stdio.h>
-#include <sys/select.h>
+#include "z_epoll.h"
+
+#define ZOK_HOST "127.0.0.1"
+#define ZOK_PORT 10032
 
 /* event */
 typedef struct event {
-    int port;
-    int buffer_size;
-    int sfd;
-    fd_set read_fds;
-    fd_set temp_fds;
+    int fd;
 } event;
 
 /**
- * init_socket
+ * netMain
  */
-void init_socket(event *ev);
-
-/**
- * create_bind_socket
- */
-void create_bind_socket(event *ev);
-
-/**
- * listen_socket
- */
-void listen_socket(event *ev);
-
-/**
- * loop
- */
-void loop(event *ev);
+void netMain(event *ev);

@@ -7,7 +7,6 @@
 /* global var */
 zokServer server;
 
-/*
 zCommand commandTables[] ={
     {"set", setCommand},
     {"get", getCommand},
@@ -16,7 +15,6 @@ zCommand commandTables[] ={
     {"ping", pingCommand},
     {"info", infoCommand}
 };
-*/
 
 /**
  * echo zok version
@@ -31,7 +29,10 @@ void version() {
  */
 void usage() {
     printf("Usage: ./zok-server -v or --version\n");
-    printf("       ./zok-server -p 9527 or --port 9527\n");
+    printf("       ./zok-server -h or --help\n");
+    printf("       ./zok-server \n");
+    printf("       ./zok-server -c ./zok.conf or --conf ./zok.conf\n");
+    printf("       ./zok-server -d true or -d false or --daemon true or --daemon false\n");
     exit(0);
 }
 
@@ -65,10 +66,14 @@ void daemonize() {
  */
 void initServer(zokServer *server) {
     server->pid = 0;
+    server->host = ZOK_HOST;
+    server->port = ZOK_PORT;
+    server->daemonize = 0;
     server->event = (event *)malloc(sizeof(event));
 }
 
 int main(int argc, char **argv) {
+    initServer(&server);
     if(argc >= 2) {
         if(strcmp(argv[1] ,"-v") == 0 || strcmp(argv[1] ,"--version") == 0) {
             version();
@@ -77,23 +82,37 @@ int main(int argc, char **argv) {
             usage();
         }
 
-        if(strcmp(argv[1] ,"-p") == 0 || strcmp(argv[1] ,"--port") == 0) {
-            if(argc >= 3) {
-                server.port = atoi(argv[2]);
+        for(int i = 1; i < argc; i++) {
+            if(argc == i) {
+                break;
+            }
+            if(strcmp(argv[i] ,"-d") == 0 || strcmp(argv[i] ,"--daemon") == 0) {
+                if(strcmp(argv[i + 1] ,"true") == 0) {
+                    server.daemonize = 1;
+                    i++;
+                } else if(strcmp(argv[i + 1] ,"false") == 0) {
+                    server.daemonize = 0;
+                    i++;
+                }
+            } else if(strcmp(argv[i] ,"-c") == 0 || strcmp(argv[i] ,"--conf") == 0) {
+                server.conf_filename = argv[i + 1];
+                i++;
             } else {
-                printf("params is loss \n");
+                printf("cli params is error \n");
                 exit(1);
             }
-        } else {
-            printf("params is loss \n");
-            exit(1);
         }
-        printf("port=%d\n", server.port);
     }
 
-    initServer(&server);
+    printf("%s \n", server.conffile);
 
-    //daemonize();
-    loop(server.event);
+    exit(ZOK_OK);
+
+    if(server.daemonize) {
+        daemonize();
+    }
+
+    netMain(server.event);
+
     return ZOK_OK;
 }
