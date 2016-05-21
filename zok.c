@@ -70,7 +70,7 @@ void initServer(zokServer *server) {
     server->pid = getpid();
     server->zokaddr = (zokAddr *)malloc(sizeof(zokAddr));
     server->zokaddr->host = ZOK_HOST;
-    server->zokAddr->port = ZOK_PORT;
+    server->zokaddr->port = ZOK_PORT;
     server->daemonize = 0;
     server->conf_filename = NULL;
     server->event = (event *)malloc(sizeof(event));
