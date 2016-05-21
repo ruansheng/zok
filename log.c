@@ -4,8 +4,8 @@
 #include "log.h"
 
 void logger(int line, const char *level, const char *msg) {
-    time_t timep;
     struct tm *p;
+    time_t timep;
     time(&timep);
     p = localltime(&timep);
     char *time = sprintf("%d-%d-%d %d:%d:%d", 1900 + p->tm_year, 1+p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
