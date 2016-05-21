@@ -82,7 +82,8 @@ int main(int argc, char **argv) {
             usage();
         }
 
-        for(int i = 1; i < argc; i++) {
+        int i;
+        for(i = 1; i < argc; i++) {
             if(argc == i) {
                 break;
             }
@@ -104,7 +105,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    printf("%s \n", server.conffile);
+    printf("%s \n", server.conf_filename);
 
     exit(ZOK_OK);
 
