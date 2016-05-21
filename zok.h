@@ -12,8 +12,9 @@
 #define ZOK_OK 0
 #define ZOK_ERR -1
 
-#include "net.h"
 #include "version.h"
+#include "net.h"
+#include "log.h"
 
 typedef struct Object{
     void *val;
