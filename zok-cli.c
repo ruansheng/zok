@@ -150,9 +150,9 @@ int main(int argc, char *argv[]) {
     socket_connect(&cli);
 
     for(;;) {
-        getLineKey(clio);
-        sendCommand(clio);
-        getResponse(clio);
+        getLineKey(&cli);
+        sendCommand(&cli);
+        getResponse(&cli);
     }
     return 0;
 }
