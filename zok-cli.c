@@ -23,32 +23,43 @@ int socket_create() {
     return listenfd;
 }
 
-void socket_connect(client c) {
+void socket_connect(client *c) {
     struct sockaddr_in server;
     memset(&server, 0, sizeof(server));       /* Clear struct */
     server.sin_family = AF_INET;                  /* Internet/IP */
-    server.sin_addr.s_addr = inet_addr(c.host);  /* IP address */
-    server.sin_port = htons(c.ip);
+    server.sin_addr.s_addr = inet_addr(c->host);  /* IP address */
+    server.sin_port = htons(c->ip);
     if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
         perror("Failed to connect with server.\n");
         exit(1);
     }
 }
 
-void socket_read(client c, char *msg) {
-    if(send(sock, msg, strlen(msg), 0) != echolen) {
+char *socket_read(client *c) {
+    char buf[1024];
+    int s = recv(c->socket, buf, 1024, 0);
+    if(s != -1) {
+        perror("Mismatch in number of sent bytes");
+        exit(1);
+    }
+    return buf;
+}
+
+void socket_send(client c, char *msg) {
+    int s = send(sock, msg, strlen(msg), 0);
+    if(s == -1) {
         perror("Mismatch in number of sent bytes");
         exit(1);
     }
 }
 
-client c;
+client cli;
 
 int main(int argc, char *argv[]) {
-    c.host = "127.0.0.1";
-    c.ip = 10032;
+    cli.host = "127.0.0.1";
+    cli.ip = 10032;
 
-    c.socket = socket_create();
-    socket_connect(c);
+    cli.socket = socket_create();
+    socket_connect(&cli);
     return 0;
 }
