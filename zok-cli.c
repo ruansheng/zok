@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "version.h"
+//#include "version.h"
 
 typedef struct client{
     char *host;
