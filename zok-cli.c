@@ -50,8 +50,8 @@ void socket_read(client *c) {
     printf("%s\n", buf);
 }
 
-void socket_send(client c, char *msg) {
-    int s = send(sock, msg, strlen(msg), 0);
+void socket_send(client *c, char *msg) {
+    int s = send(c->sock, msg, strlen(msg), 0);
     if(s == -1) {
         perror("Mismatch in number of sent bytes");
         exit(1);
