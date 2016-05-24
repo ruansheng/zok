@@ -34,7 +34,7 @@ void socket_connect(client *c) {
     server.sin_family = AF_INET;                  /* Internet/IP */
     server.sin_addr.s_addr = inet_addr(c->host);  /* IP address */
     server.sin_port = htons(c->ip);
-    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
+    if (connect(c->sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
         perror("Failed to connect with server.\n");
         exit(1);
     }
@@ -42,7 +42,7 @@ void socket_connect(client *c) {
 
 void socket_read(client *c) {
     char buf[1024];
-    int s = recv(c->socket, buf, 1024, 0);
+    int s = recv(c->sock, buf, 1024, 0);
     if(s != -1) {
         perror("Mismatch in number of sent bytes");
         exit(1);
