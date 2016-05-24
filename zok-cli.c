@@ -12,8 +12,8 @@
 //#include "version.h"
 
 typedef struct client{
-    char *host;
-    int ip;
+    char *ip;
+    int port;
     int sock;
     char *line;
     char *cmd;
@@ -97,7 +97,8 @@ void splitString(client *clio) {
     char *tmp = str;
     strcpy(str, "*queue\n");
     str += 7;
-    for(int s = 0; s <= i; s++) {
+    int s;
+    for(s = 0; s <= i; s++) {
         strcpy(str, cmd[s]);
         str += strlen(cmd[s]);
         strcpy(str, "\n");
@@ -118,7 +119,7 @@ void sendCommand(client *clio) {
 * command length <= 100
 */
 void getLineKey(client *clio) {
-    printf("%s:%d>", clio->host, clio->port);
+    printf("%s:%d>", clio->ip, clio->port);
     char line[1024];
     memset(line, '\0', 1014);
     fgets(line, 1024, stdin);
@@ -143,8 +144,8 @@ void getResponse(client *clio) {
 client cli;
 
 int main(int argc, char *argv[]) {
-    cli.host = "127.0.0.1";
-    cli.ip = 10032;
+    cli.ip = "127.0.0.1";
+    cli.port = 10032;
 
     cli.sock = socket_create();
     socket_connect(&cli);
