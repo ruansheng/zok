@@ -32,8 +32,8 @@ void socket_connect(client *c) {
     struct sockaddr_in server;
     memset(&server, 0, sizeof(server));       /* Clear struct */
     server.sin_family = AF_INET;                  /* Internet/IP */
-    server.sin_addr.s_addr = inet_addr(c->host);  /* IP address */
-    server.sin_port = htons(c->ip);
+    server.sin_addr.s_addr = inet_addr(c->ip);  /* IP address */
+    server.sin_port = htons(c->port);
     if (connect(c->sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
         perror("Failed to connect with server.\n");
         exit(1);
