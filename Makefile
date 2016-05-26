@@ -14,10 +14,18 @@ zok.o:zok.c
 	@gcc -o zok.o -c zok.c
 	@echo doing compile zok.o
 
+zok-cli:zok-cli.o
+	@gcc -o zok-cli zok-cli.o
+	@echo doing compile zok-cli
+
+zok-cli.o:zok-cli.c
+	@gcc -o zok-cli.o -c zok-cli.c
+	@echo doing compile zok-cli.o
+
 install:
 	@echo copy files to target dir !
 
 clean:
-	@rm -rf zok-server zok.o net.o
+	@rm -rf zok-server zok-cli zok.o net.o zok-cli.o
 	@echo doing clean files
 	@echo clean finished !
