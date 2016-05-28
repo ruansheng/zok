@@ -20,3 +20,16 @@ int intlen(int i) {
 int bulklen(int len) {
     return 1 + intlen(len) + 2 + len + 2;
 }
+
+clock_t start_time() {
+    return clock();
+}
+
+clock_t start_time() {
+    return clock();
+}
+
+double duation_time(clock_t start, clock_t end) {
+    double duration = (double)(end - start);
+    return duration / CLOCKS_PER_SEC;
+}

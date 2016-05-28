@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
     int a = 3;
 
     int i;
+    clock_t start = start_time();
     for(i = 0; i < 10000; i++) {
         char *b1 = "set";
         char *b2 = "name";
@@ -21,5 +22,7 @@ int main(int argc, char *argv[]) {
         zokCommandArgvToString(&zc, a, b);
         printf("%s", zc.obuf);
     }
+    clock_t end = end_time();
+    printf("duration=%0.2lf s\n", duation_time(start, end));
     return 0;
 }
