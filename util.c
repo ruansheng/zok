@@ -25,7 +25,7 @@ clock_t start_time() {
     return clock();
 }
 
-clock_t start_time() {
+clock_t end_time() {
     return clock();
 }
 
