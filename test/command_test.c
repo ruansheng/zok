@@ -18,8 +18,9 @@ int main(int argc, char *argv[]) {
         b[0] = b1;
         b[1] = b2;
         b[2] = b3;
-        zokCommandArgvToString(&zc, a, b);
-        printf("%s", zc.obuf);
+        //printf("%s\n", b[2]);
+        //zokCommandArgvToString(&zc, a, b);
+        //printf("%s", zc.obuf);
     }
     return 0;
 }
