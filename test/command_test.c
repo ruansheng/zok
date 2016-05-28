@@ -23,6 +23,6 @@ int main(int argc, char *argv[]) {
         printf("%s", zc.obuf);
     }
     zc.end = clock();
-    printf("duration=%0.2lf s\n", duration_time(zc.start, zc.end));
+    printf("duration=%lf s\n", duration_time(zc.start, zc.end));
     return 0;
 }
