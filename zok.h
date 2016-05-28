@@ -8,6 +8,7 @@
 #include<unistd.h>
 #include<fcntl.h>
 #include<unistd.h>
+#include<time.h>
 
 #define ZOK_OK 0
 #define ZOK_ERR -1
@@ -23,6 +24,8 @@ typedef struct Object{
 } zobj;
 
 typedef struct {
+    clock_t start;
+    clock_t end;
     zds obuf;
 } zokClient;
 

@@ -10,8 +10,4 @@ int intlen(int i);
 
 int bulklen(int len);
 
-clock_t start_time();
-
-clock_t end_time();
-
 double duation_time(clock_t start, clock_t end);
