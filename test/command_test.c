@@ -6,7 +6,16 @@
 
 int main(int argc, char *argv[]) {
     zokClient zc;
-    zokCommandArgvToString(&zc, argc, argv);
-    printf("%s", zc.obuf);
+    int a = 3;
+    char *b[] = {
+      "set",
+      "name"
+    };
+    int i;
+    for(i = 0; i < 10000; i++) {
+        b[2] = &itoa(i);
+        zokCommandArgvToString(&zc, a, b);
+        printf("%s", zc.obuf);
+    }
     return 0;
 }
