@@ -10,16 +10,16 @@ int main(int argc, char *argv[]) {
 
     int i;
     zc.start = clock();
-    for(i = 0; i < 100000000; i++) {
+    for(i = 0; i < 1000000; i++) {
         char *b1 = "set";
         char *b2 = "name";
         char *b3 = "ruansheng";
-        //sprintf(b3, "%d", i);
         char *b[3];
         b[0] = b1;
         b[1] = b2;
         b[2] = b3;
         zokCommandArgvToString(&zc, a, b);
+        printf("%d\n", i);
         printf("%s", zc.obuf);
     }
     zc.end = clock();
