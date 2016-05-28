@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
     zokClient zc;
     int a = 3;
 
+    clock_t start = clock();
     int i;
     zc.start = clock();
     for(i = 0; i < 100000; i++) {
@@ -23,6 +24,9 @@ int main(int argc, char *argv[]) {
         printf("%s", zc.obuf);
     }
     zc.end = clock();
+    clock_t end = clock();
     printf("duration=%lf s\n", duration_time(zc.start, zc.end));
+    double duration= (double)(end - start);
+    printf("%lf\n",duration/CLOCKS_PER_SEC);
     return 0;
 }
