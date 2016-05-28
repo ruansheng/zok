@@ -29,7 +29,7 @@ int zokFormatCommandArgvToString(char **target, int argc, char **argv) {
 
     total = 1 + intlen(argc) + 2; /*  add first line "*3\r\n" string length  */
     for(i = 0; i < argc; i++) {
-        len = strlen(argv[i]);
+        int len = strlen(argv[i]);
         total += bulklen(len); /*  add an cmd item two line "$3\r\n" and "set\r\n" string length  */
     }
 
