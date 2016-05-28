@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
         char *b1 = "set";
         char *b2 = "name";
         char *b3;
-        sprintf(b3, i);
+        sprintf(b3, "%d", i);
         //char *b[3];
         //b[0] = b1;
         //b[1] = b2;
