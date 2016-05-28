@@ -15,13 +15,15 @@
 #include "version.h"
 #include "net.h"
 #include "log.h"
+#include "util.h"
+#include "zds.h"
 
 typedef struct Object{
     void *val;
 } zobj;
 
 typedef struct {
-    int id;
+    zds obuf;
 } zokClient;
 
 /* define function pointer */
