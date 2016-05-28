@@ -10,4 +10,4 @@ int intlen(int i);
 
 int bulklen(int len);
 
-double duation_time(clock_t start, clock_t end);
+double duration_time(clock_t start, clock_t end);
