@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     printf("duration=%lf s\n", duration_time(zc.start, zc.end));
     double duration= (double)(end - start);
     printf("%lf\n",duration/CLOCKS_PER_SEC);
-    printf("%lf\n",start);
-    printf("%lf\n",end);
+    printf("%d\n",start);
+    printf("%d\n",end);
     return 0;
 }
