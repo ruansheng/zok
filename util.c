@@ -29,7 +29,7 @@ clock_t end_time() {
     return clock();
 }
 
-double duation_time(clock_t start, clock_t end) {
+double duration_time(clock_t start, clock_t end) {
     double duration = (double)(end - start);
     return duration / CLOCKS_PER_SEC;
 }
