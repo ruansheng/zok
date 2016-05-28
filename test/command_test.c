@@ -14,10 +14,10 @@ int main(int argc, char *argv[]) {
         char *b2 = "name";
         char *b3;
         sprintf(b3, i);
-        char *b[3];
-        b[0] = b1;
-        b[1] = b2;
-        b[2] = b3;
+        //char *b[3];
+        //b[0] = b1;
+        //b[1] = b2;
+        //b[2] = b3;
         //printf("%s\n", b[2]);
         //zokCommandArgvToString(&zc, a, b);
         //printf("%s", zc.obuf);
