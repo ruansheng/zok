@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
         zokCommandArgvToString(&zc, a, b);
         printf("%d\n", i);
         printf("%s", zc.obuf);
+        free(zc.obuf);
     }
     zc.end = clock();
     printf("duration=%0.2lf s\n", duation_time(zc.start, zc.end));
