@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     clock_t start = clock();
     int i;
     zc.start = clock();
-    for(i = 0; i < 100000; i++) {
+    for(i = 0; i < 200000; i++) {
         char *b1 = "set";
         char *b2 = "name";
         char *b3 = "ruansheng";
