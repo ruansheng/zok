@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     };
     int i;
     for(i = 0; i < 10000; i++) {
-        b[2] = itoa(i);
+        sprintf(b[2], i);
         zokCommandArgvToString(&zc, a, b);
         printf("%s", zc.obuf);
     }
