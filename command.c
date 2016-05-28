@@ -38,7 +38,7 @@ int zokFormatCommandArgvToString(char **target, int argc, char **argv) {
 
     int pos = sprintf(cmd, "*%d\r\n", argc);
     for(i = 0; i < argc; i++) {
-        len = strlen(argv[i]);
+        int len = strlen(argv[i]);
         pos += sprintf(cmd + pos, "$%zu\r\n", len);
         memcpy(cmd + pos, argv[i], len);
         pos += len;
