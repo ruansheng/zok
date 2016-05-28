@@ -13,10 +13,10 @@
 #define ZOK_ERR -1
 
 #include "version.h"
+#include "zds.h"
 #include "net.h"
 #include "log.h"
 #include "util.h"
-#include "zds.h"
 
 typedef struct Object{
     void *val;
