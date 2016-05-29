@@ -1,11 +1,12 @@
 all:zok-server zok-cli
 	.PHONY all
+
 zok-server:zok.o z_epoll.o net.o
 	@gcc -o zok-server zok.o z_epoll.o net.o
 	@echo doing compile zok-server
 
-zok-cli:zok-cli.o
-	@gcc -o zok-cli zok-cli.o
+zok-cli:zds.o util.o zok-cli.o
+	@gcc -o zok-cli zds.o util.o zok-cli.o
 	@echo doing compile zok-cli
 
 net.o:net.c
@@ -23,6 +24,14 @@ zok.o:zok.c
 zok-cli.o:zok-cli.c
 	@gcc -o zok-cli.o -c zok-cli.c
 	@echo doing compile zok-cli.o
+
+util.o:util.c
+	@gcc -o util.o -c util.c
+	@echo doing compile util.o
+
+zds.o:zds.c
+	@gcc -o zds.o -c zds.c
+	@echo doing compile zds.o
 
 install:
 	@echo copy files to target dir !
