@@ -1,159 +1,217 @@
 //
 // Created by ruansheng on 16/4/8.
 //
-
-#include<stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h>
 
-//#include "version.h"
+#include "zok-cli.h"
 
-typedef struct client{
-    char *ip;
-    int port;
-    int sock;
-    char *line;
+zokClient cli;
+
+int zokCommandArgvToString(zokClient *zc, int argc, char **argv) {
     char *cmd;
-} client;
-
-int socket_create() {
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
-    if(sock == -1) {
-        perror("socket error.\n");
-        exit(0);
+    int len;
+    len = zokFormatCommandArgvToString(&cmd, argc, argv);
+    if(len == -1) {
+        printf("Out of memory");
+        return ZOK_COMMAND_ERR;
     }
-    return sock;
+
+    zds z = newlenzds(cmd, len);
+    if(z == NULL) {
+        free(cmd);
+        printf("newlenzds alloc memory");
+        return ZOK_COMMAND_ERR;
+    }
+    zc->obuf = z;
+    free(cmd);
+    return ZOK_COMMAND_OK;
 }
 
-void socket_connect(client *c) {
+int zokFormatCommandArgvToString(char **target, int argc, char **argv) {
+    int i, total;
+
+    total = 1 + intlen(argc) + 2; /*  add first line "*3\r\n" string length  */
+    for(i = 0; i < argc; i++) {
+        int len = strlen(argv[i]);
+        total += bulklen(len); /*  add an cmd item two line "$3\r\n" and "set\r\n" string length  */
+    }
+
+    char *cmd = (char *)malloc(total + 1); /*  add total cmd + '\0' string length  */
+    if(cmd == NULL) return -1;
+
+    int pos = sprintf(cmd, "*%d\r\n", argc);
+    for(i = 0; i < argc; i++) {
+        int len = strlen(argv[i]);
+        pos += sprintf(cmd + pos, "$%d\r\n", len);
+        memcpy(cmd + pos, argv[i], len);
+        pos += len;
+        cmd[pos++] = '\r';
+        cmd[pos++] = '\n';
+    }
+    cmd[pos] = '\0';
+    *target = cmd;
+    return total;
+}
+
+static long long ustime(void) {
+    struct timeval tv;
+    long long ust;
+
+    gettimeofday(&tv, NULL);
+    ust = ((long long)tv.tv_sec)*1000000;
+    ust += tv.tv_usec;
+    return ust;
+}
+
+static long long mstime(void) {
+    return ustime()/1000;
+}
+
+int cliConnect() {
+    if(cli.sock > 0) {
+        close(cli.sock);
+    }
+
+    if(cli.obuf != NULL) {
+        freezds(cli.obuf);
+    }
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if(sock == -1) {
+        printf("%s\n", strerror(errno));
+        return ZOK_COMMAND_ERR;
+    }
+
     struct sockaddr_in server;
     memset(&server, 0, sizeof(server));       /* Clear struct */
     server.sin_family = AF_INET;                  /* Internet/IP */
-    server.sin_addr.s_addr = inet_addr(c->ip);  /* IP address */
-    server.sin_port = htons(c->port);
-    if (connect(c->sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
-        perror("Failed to connect with server.\n");
-        exit(1);
+    server.sin_addr.s_addr = inet_addr(cli.ip);  /* IP address */
+    server.sin_port = htons(cli.port);
+    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
+        printf("%s\n", strerror(errno));
+        return ZOK_COMMAND_ERR;
     }
+
+    cli.sock = sock;
+    return ZOK_COMMAND_OK;
 }
 
-void socket_read(client *c) {
+void socket_read() {
     char buf[1024];
-    int s = recv(c->sock, buf, 1024, 0);
+    int s = recv(cli.sock, buf, 1024, 0);
     if(s != -1) {
-        perror("Mismatch in number of sent bytes");
-        exit(1);
+        printf("%s\n", strerror(errno));
     }
     printf("%s\n", buf);
 }
 
-void socket_send(client *c, char *msg) {
-    int s = send(c->sock, msg, strlen(msg), 0);
+void socket_send(const char *cmd) {
+    int s = send(cli.sock, cmd, strlen(cmd), 0);
     if(s == -1) {
-        perror("Mismatch in number of sent bytes");
-        exit(1);
+        printf("%s\n", strerror(errno));
     }
-}
-
-void close_sock(client *c) {
-    close(c->sock);
-    exit(0);
-}
-
-/**
- * splitString
- */
-void splitString(client *clio) {
-    const char *c = clio->line;
-    char cmd[3][1024];
-    int i = 0;
-    int j = 0;
-    int total = 0;
-    while(*c != '\0') {
-        if(*c == ' ') {
-            cmd[i][j] = '\0';
-            i++;
-            j = 0;
-            c++;
-            while(*c == ' ') {
-                *c++;
-            }
-        } else {
-            cmd[i][j] = *c;
-            j++;
-            c++;
-            total++;
-        }
-    }
-
-    char *str = (char *)malloc(total + 9); // *queue \n set \n name \n ruansheng
-    if(str == NULL) {
-        printf("malloc error\n");
-        exit(1);
-    }
-    char *tmp = str;
-    strcpy(str, "*queue\n");
-    str += 7;
-    int s;
-    for(s = 0; s <= i; s++) {
-        strcpy(str, cmd[s]);
-        str += strlen(cmd[s]);
-        strcpy(str, "\n");
-        str += 1;
-    }
-    clio->cmd = tmp;
 }
 
 /**
  * sendCommand
  */
-void sendCommand(client *clio) {
-    write(clio->sock, clio->cmd, strlen(clio->cmd) + 1);
+void sendCommand() {
+    printf("%s", cli.obuf);
+    int s = write(cli.sock, cli.obuf, strlen(cli.obuf));
+    if(s < 0) {
+        cliConnect();
+        write(cli.sock, cli.obuf, strlen(cli.obuf));
+    }
 }
 
 /**
-* 获取输入的command
+* reflush connected server prompt
 * command length <= 100
 */
-void getLineKey(client *clio) {
-    printf("%s:%d>", clio->ip, clio->port);
-    char line[1024];
-    memset(line, '\0', 1014);
-    fgets(line, 1024, stdin);
-    clio->line = (char *)malloc(strlen(line));
-    strcpy(clio->line, line);
-
-    splitString(clio);
-    sendCommand(clio);
+void refreshConnectPrompt() {
+    sprintf(cli.prompt, "%s:%d> ", cli.ip, cli.port);
 }
 
 /**
  * getResponse
  */
-void getResponse(client *clio) {
+/*
+void getResponse(zokClient *clio) {
     char buffer[1024];
     memset(buffer,0,sizeof(buffer));
     read(clio->sock, buffer, 1024);
     printf("%s \n", buffer);
 }
+ */
 
+char *getCommand() {
+    char buf[4096];
+    int len;
+    if(cli.sock > 0) {
+        printf("%s", cli.prompt);
+    } else {
+        printf("not connected> ");
+    }
 
-client cli;
+    fflush(stdout);
+    if (fgets(buf, 4096, stdin) == NULL)
+        return NULL;
+    len = strlen(buf);
+    while(len && (buf[len-1] == '\n' || buf[len-1] == '\r')) {
+        len--;
+        buf[len] = '\0';
+    }
+    return strdup(buf);
+}
+
+void repl() {
+    int argc;
+    zds *argv;
+    refreshConnectPrompt();
+    char *line;
+    while((line = getCommand())!= NULL) {
+        if(line[0] != '\0') {
+            argv = zdssplitargs(line, &argc);
+            if(argv == NULL) {
+                printf("Invalid argument(s)\n");
+                free(line);
+                continue;
+            } else if(argc > 0){
+                if(strcasecmp(argv[0], "quit") == 0 || strcasecmp(argv[0], "exit") == 0) {
+                    exit(0);
+                } else if(argc == 3 && strcasecmp(argv[0],"connect") == 0) {
+                    cli.ip = argv[1];
+                    cli.port = atoi(argv[2]);
+                    refreshConnectPrompt();
+                    cliConnect();
+                } else {
+                    long long start_time = mstime(), elapsed;
+                    zokCommandArgvToString(&cli, argc, argv);
+                    sendCommand();
+                    elapsed = mstime() - start_time;
+                    /* print exec time */
+                    printf("(%.2fs)\n",(double)elapsed/1000);
+                }
+            }
+        }
+    }
+}
 
 int main(int argc, char *argv[]) {
     cli.ip = "127.0.0.1";
     cli.port = 10032;
 
-    cli.sock = socket_create();
-    socket_connect(&cli);
+    cliConnect();
+    repl();
 
-    for(;;) {
-        getLineKey(&cli);
-        sendCommand(&cli);
-        getResponse(&cli);
-    }
+    //getResponse();
+
     return 0;
 }

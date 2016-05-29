@@ -2,6 +2,7 @@
 // Created by ruansheng on 16/4/23.
 //
 #include<stdio.h>
+#include<ctype.h>
 
 #define ZOK_ZDS_PREALLOC_SIZE (1024 * 1024)
 
@@ -25,3 +26,5 @@ zds zdscatlen(zds z, const char *t, int len);
 void freezds(zds z);
 
 zds zdsMakeRoom(zds z, int addlen);
+
+zds *zdssplitargs(const char *t, int *len);

@@ -23,9 +23,11 @@ typedef struct Object{
     void *val;
 } zobj;
 
-typedef struct {
-    clock_t start;
-    clock_t end;
+typedef struct zokClient{
+    char *ip;
+    int port;
+    int sock;
+    char prompt[128];
     zds obuf;
 } zokClient;
 
