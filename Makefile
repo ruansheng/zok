@@ -1,5 +1,5 @@
 all:zok-server zok-cli
-	.PHONY all
+.PHONY:all
 
 zok-server:zok.o z_epoll.o net.o
 	@gcc -o zok-server zok.o z_epoll.o net.o
