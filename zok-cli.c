@@ -185,10 +185,10 @@ void repl() {
     char *line;
     while((cli.ctx->raw = getCommand())!= NULL) {
         if(cli.ctx->raw[0] != '\0') {
-            argv = zdssplitargs(line, &argc);
+            argv = zdssplitargs(cli.ctx->raw, &argc);
             if(argv == NULL) {
                 printf("Invalid argument(s)\n");
-                free(line);
+                free(cli.ctx->raw);
                 continue;
             } else if(argc > 0){
                 cli.ctx->argc = argc;
