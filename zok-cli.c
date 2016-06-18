@@ -139,7 +139,7 @@ void initContext(context *ctx) {
     ctx = (context *)malloc(sizeof(context));
     ctx->cid = rand();
     ctx->raw = NULL;
-    ctx->argc = 0;
+    ctx->argc = 5;
     ctx->argv = NULL;
     ctx->obuf = zdsempty();
     if(ctx == NULL) {
@@ -225,9 +225,9 @@ int main(int argc, char *argv[]) {
 
     initContext(ctx);
     cli.ctx = ctx;
-
-    cliConnect();
-    repl();
+    printf("%d\n", ctx->argc);
+    //cliConnect();
+    //repl();
 
     return 0;
 }
