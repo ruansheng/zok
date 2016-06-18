@@ -183,9 +183,8 @@ void repl() {
     zds *argv;
     refreshConnectPrompt();
     char *line;
-    while((line = getCommand())!= NULL) {
-        if(line[0] != '\0') {
-            cli.ctx->raw = line;
+    while((cli.ctx->raw = getCommand())!= NULL) {
+        if(cli.ctx->raw[0] != '\0') {
             printf("%s\n", cli.ctx->raw);
 
             /*
