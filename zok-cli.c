@@ -184,8 +184,8 @@ void repl() {
     zds *argv;
     refreshConnectPrompt();
     char *line;
-    while((line = getCommand())!= NULL) {
-        printf("%s\n", line);
+    while((cli.ctx->raw = getCommand())!= NULL) {
+        printf("%s\n", cli.ctx->raw);
         /*
         if(cli.ctx->raw[0] != '\0') {
             argv = zdssplitargs(line, &argc);
@@ -226,9 +226,8 @@ int main(int argc, char *argv[]) {
 
     ctx = initContext();
     cli.ctx = ctx;
-    printf("%d\n", ctx->argc);
-    //cliConnect();
-    //repl();
+    cliConnect();
+    repl();
 
     return 0;
 }
