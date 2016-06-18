@@ -122,27 +122,27 @@ int zokStringToFormatCommandArgv(char **target, int argc, char **argv) {
     return total;
 }
 
-void setCommand(zokClient *c) {
+void setCommand(context *c) {
 
 }
 
-void getCommand(zokClient *c) {
+void getCommand(context *c) {
 
 }
 
-void delCommand(zokClient *c) {
+void delCommand(context *c) {
 
 }
 
-void ttlCommand(zokClient *c) {
+void ttlCommand(context *c) {
 
 }
 
-void pingCommand(zokClient *c) {
+void pingCommand(context *c) {
 
 }
 
-void infoCommand(zokClient *c) {
+void infoCommand(context *c) {
 
 }
 
