@@ -44,9 +44,10 @@ void do_event(int listenfd) {
     int total = 0;
     for(;;) {
         total++;
-        ret = epoll_wait(epollfd, events, EPOLLEVENTS, -1);
-        handle_events(epollfd, events, ret, listenfd, buf);
         printf("%d\n", total);
+        ret = epoll_wait(epollfd, events, EPOLLEVENTS, -1);
+        printf("ret=%d\n", ret);
+        handle_events(epollfd, events, ret, listenfd, buf);
     }
     close(epollfd);
 }
