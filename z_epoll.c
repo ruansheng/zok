@@ -58,7 +58,7 @@ void handle_events(int epollfd, struct epoll_event* events, int num, int listenf
         } else if(events[i].events & EPOLLIN) {  //处理读
             do_read(epollfd, fd, buf);
         } else if(events[i].events & EPOLLOUT) { //处理写
-            do_write(epollfd, fd, buf);        //echo
+            //do_write(epollfd, fd, buf);        //echo
         }
     }
 }
