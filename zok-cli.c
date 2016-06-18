@@ -119,7 +119,6 @@ void socket_send(const char *cmd) {
  * sendCommand
  */
 void sendCommand() {
-    //printf("%s", cli.obuf);
     int s = write(cli.sock, cli.ctx->obuf, strlen(cli.ctx->obuf));
     if(s < 0) {
         cliConnect();
@@ -185,8 +184,6 @@ void repl() {
     refreshConnectPrompt();
     char *line;
     while((cli.ctx->raw = getCommand())!= NULL) {
-        printf("%s\n", cli.ctx->raw);
-        /*
         if(cli.ctx->raw[0] != '\0') {
             argv = zdssplitargs(line, &argc);
             if(argv == NULL) {
@@ -206,16 +203,14 @@ void repl() {
                 } else {
                     long long start_time = mstime(), elapsed;
                     zokCommandArgvToString(&cli, argc, argv);
-                    //printf("%s", cli.ctx->obuf);
-                    //sendCommand();
-                    //getResponse();
+                    sendCommand();
+                    getResponse();
                     elapsed = mstime() - start_time;
                     // print exec time
                     printf("(%.2fs)\n",(double)elapsed/1000);
                 }
             }
         }
-        */
     }
 }
 
