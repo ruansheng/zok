@@ -135,8 +135,8 @@ void refreshConnectPrompt() {
     sprintf(cli.prompt, "%s:%d> ", cli.ip, cli.port);
 }
 
-void initContext(context *ctx) {
-    ctx = (context *)malloc(sizeof(context));
+context * initContext() {
+    context *ctx = (context *)malloc(sizeof(context));
     ctx->cid = rand();
     ctx->raw = NULL;
     ctx->argc = 5;
@@ -146,6 +146,7 @@ void initContext(context *ctx) {
         printf("malloc context fail\n");
         exit(0);
     }
+    return ctx;
 }
 
 /**
@@ -223,7 +224,7 @@ int main(int argc, char *argv[]) {
     cli.port = 10032;
     context *ctx;
 
-    initContext(ctx);
+    ctx = initContext();
     cli.ctx = ctx;
     printf("%d\n", ctx->argc);
     //cliConnect();
