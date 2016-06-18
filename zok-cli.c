@@ -183,11 +183,10 @@ void repl() {
     zds *argv;
     refreshConnectPrompt();
     char *line;
-    while((cli.ctx->raw = getCommand())!= NULL) {
+    while((line = getCommand())!= NULL) {
+        printf("%s\n", line);
+        /*
         if(cli.ctx->raw[0] != '\0') {
-            printf("%s\n", cli.ctx->raw);
-
-            /*
             argv = zdssplitargs(line, &argc);
             if(argv == NULL) {
                 printf("Invalid argument(s)\n");
@@ -214,8 +213,8 @@ void repl() {
                     printf("(%.2fs)\n",(double)elapsed/1000);
                 }
             }
-            */
         }
+        */
     }
 }
 
