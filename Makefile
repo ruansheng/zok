@@ -1,8 +1,8 @@
 all:zok-server zok-cli
 .PHONY:all
 
-zok-server:zok.o z_epoll.o net.o util.o
-	@gcc -o zok-server zok.o z_epoll.o net.o util.o
+zok-server:zok.o z_epoll.o net.o util.o zds.o
+	@gcc -o zok-server zok.o z_epoll.o net.o util.o zds.o
 	@echo doing compile zok-server
 
 zok-cli:zds.o util.o zok-cli.o
