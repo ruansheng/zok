@@ -187,6 +187,8 @@ void repl() {
         if(line[0] != '\0') {
             cli.ctx->raw = line;
             printf("%s\n", cli.ctx->raw);
+
+            /*
             argv = zdssplitargs(line, &argc);
             if(argv == NULL) {
                 printf("Invalid argument(s)\n");
@@ -209,10 +211,11 @@ void repl() {
                     //sendCommand();
                     //getResponse();
                     elapsed = mstime() - start_time;
-                    /* print exec time */
+                    // print exec time
                     printf("(%.2fs)\n",(double)elapsed/1000);
                 }
             }
+            */
         }
     }
 }
