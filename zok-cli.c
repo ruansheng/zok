@@ -188,6 +188,7 @@ void repl() {
     while((line = getCommand())!= NULL) {
         if(line[0] != '\0') {
             cli.ctx->raw = line;
+            printf("%s\n", cli.ctx->raw);
             argv = zdssplitargs(line, &argc);
             if(argv == NULL) {
                 printf("Invalid argument(s)\n");
@@ -206,7 +207,7 @@ void repl() {
                 } else {
                     long long start_time = mstime(), elapsed;
                     zokCommandArgvToString(&cli, argc, argv);
-                    printf("%s", cli.ctx->obuf);
+                    //printf("%s", cli.ctx->obuf);
                     //sendCommand();
                     //getResponse();
                     elapsed = mstime() - start_time;
