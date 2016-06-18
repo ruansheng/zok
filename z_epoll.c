@@ -96,7 +96,9 @@ void do_read(int epollfd, int fd, char* buf) {
         close(fd);
         delete_event(epollfd, fd, EPOLLIN);
     } else {
-        printf("read message is: %s", buf);
+        //printf("read message is: %s", buf);
+        // 存储
+
         modify_event(epollfd, fd, EPOLLOUT);   //实现echo处理
     }
 }

@@ -13,12 +13,20 @@
 #define ZOK_COMMAND_OK 0
 #define ZOK_COMMAND_ERR -1
 
+typedef struct context{
+    int cid;
+    zds raw;
+    int argc;
+    char **argv;
+    zds obuf;
+} context;
+
 typedef struct zokClient{
     char *ip;
     int port;
     int sock;
     char prompt[128];
-    zds obuf;
+    context *ctx;
 } zokClient;
 
 int zokCommandArgvToString(zokClient *zc, int argc, char **argv);

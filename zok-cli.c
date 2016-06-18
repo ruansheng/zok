@@ -29,7 +29,7 @@ int zokCommandArgvToString(zokClient *zc, int argc, char **argv) {
         printf("newlenzds alloc memory");
         return ZOK_COMMAND_ERR;
     }
-    zc->obuf = z;
+    zc->ctx->obuf = z;
     free(cmd);
     return ZOK_COMMAND_OK;
 }
@@ -77,10 +77,6 @@ static long long mstime(void) {
 int cliConnect() {
     if(cli.sock > 0) {
         close(cli.sock);
-    }
-
-    if(cli.obuf != NULL) {
-        freezds(cli.obuf);
     }
 
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -139,6 +135,21 @@ void refreshConnectPrompt() {
     sprintf(cli.prompt, "%s:%d> ", cli.ip, cli.port);
 }
 
+void initContext(context *ctx) {
+    if(ctx != NULL) {
+        ctx->cid = rand();
+        ctx->raw = NULL;
+        ctx->argc = 0;
+        ctx->argv = NULL;
+        ctx->obuf = zdsempty();
+    }
+    ctx = (context *)malloc(sizeof(context));
+    if(ctx == NULL) {
+        printf("malloc context fail\n");
+        exit(0);
+    }
+}
+
 /**
  * getResponse
  */
@@ -176,12 +187,15 @@ void repl() {
     char *line;
     while((line = getCommand())!= NULL) {
         if(line[0] != '\0') {
+            cli.ctx->raw = line;
             argv = zdssplitargs(line, &argc);
             if(argv == NULL) {
                 printf("Invalid argument(s)\n");
                 free(line);
                 continue;
             } else if(argc > 0){
+                cli.ctx->argc = argc;
+                cli.ctx->argv = argv;
                 if(strcasecmp(argv[0], "quit") == 0 || strcasecmp(argv[0], "exit") == 0) {
                     exit(0);
                 } else if(argc == 3 && strcasecmp(argv[0],"connect") == 0) {
@@ -192,8 +206,9 @@ void repl() {
                 } else {
                     long long start_time = mstime(), elapsed;
                     zokCommandArgvToString(&cli, argc, argv);
-                    sendCommand();
-                    getResponse();
+                    printf("%s", cli.ctx->obuf);
+                    //sendCommand();
+                    //getResponse();
                     elapsed = mstime() - start_time;
                     /* print exec time */
                     printf("(%.2fs)\n",(double)elapsed/1000);
@@ -206,11 +221,13 @@ void repl() {
 int main(int argc, char *argv[]) {
     cli.ip = "127.0.0.1";
     cli.port = 10032;
+    context *ctx;
+
+    initContext(ctx);
+    cli.ctx = ctx;
 
     cliConnect();
     repl();
-
-    //getResponse();
 
     return 0;
 }
