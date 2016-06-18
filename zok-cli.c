@@ -123,7 +123,7 @@ void socket_send(const char *cmd) {
  * sendCommand
  */
 void sendCommand() {
-    printf("%s", cli.obuf);
+    //printf("%s", cli.obuf);
     int s = write(cli.sock, cli.obuf, strlen(cli.obuf));
     if(s < 0) {
         cliConnect();
@@ -142,14 +142,12 @@ void refreshConnectPrompt() {
 /**
  * getResponse
  */
-/*
-void getResponse(zokClient *clio) {
+void getResponse() {
     char buffer[1024];
     memset(buffer,0,sizeof(buffer));
-    read(clio->sock, buffer, 1024);
+    read(cli.sock, buffer, 1024);
     printf("%s \n", buffer);
 }
- */
 
 char *getCommand() {
     char buf[4096];
@@ -195,6 +193,7 @@ void repl() {
                     long long start_time = mstime(), elapsed;
                     zokCommandArgvToString(&cli, argc, argv);
                     sendCommand();
+                    getResponse();
                     elapsed = mstime() - start_time;
                     /* print exec time */
                     printf("(%.2fs)\n",(double)elapsed/1000);

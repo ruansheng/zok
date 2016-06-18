@@ -41,9 +41,12 @@ void do_event(int listenfd) {
     epollfd = epoll_create(FDSIZE);
     add_event(epollfd, listenfd, EPOLLIN); //本地端口监听时间,可读
 
+    int total = 0;
     for(;;) {
+        total++;
         ret = epoll_wait(epollfd, events, EPOLLEVENTS, -1);
         handle_events(epollfd, events, ret, listenfd, buf);
+        printf("%d\n", total);
     }
     close(epollfd);
 }
