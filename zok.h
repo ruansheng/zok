@@ -35,7 +35,7 @@ typedef struct context{
 } context;
 
 /* define function pointer */
-typedef void commandFunc(zokClient *c);
+typedef void commandFunc(context *c);
 
 typedef struct{
     char *name;
@@ -52,13 +52,13 @@ typedef struct{
 
 /* exec command function */
 /* string */
-void setCommand(zokClient *c);
-void getCommand(zokClient *c);
-void delCommand(zokClient *c);
-void ttlCommand(zokClient *c);
+void setCommand(context *c);
+void getCommand(context *c);
+void delCommand(context *c);
+void ttlCommand(context *c);
 
 /* system  */
-void pingCommand(zokClient *c);
-void infoCommand(zokClient *c);
+void pingCommand(context *c);
+void infoCommand(context *c);
 
 void initServer(zokServer *server);
