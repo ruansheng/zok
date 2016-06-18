@@ -120,10 +120,10 @@ void socket_send(const char *cmd) {
  */
 void sendCommand() {
     //printf("%s", cli.obuf);
-    int s = write(cli.sock, cli.obuf, strlen(cli.obuf));
+    int s = write(cli.sock, cli.ctx->obuf, strlen(cli.ctx->obuf));
     if(s < 0) {
         cliConnect();
-        write(cli.sock, cli.obuf, strlen(cli.obuf));
+        write(cli.sock, cli.ctx->obuf, strlen(cli.ctx->obuf));
     }
 }
 
