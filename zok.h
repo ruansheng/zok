@@ -26,13 +26,13 @@ typedef struct Object{
     void *val;
 } zobj;
 
-typedef struct zokClient{
-    char *ip;
-    int port;
-    int sock;
-    char prompt[128];
+typedef struct context{
+    int cid;
+    zds raw;
+    int argc;
+    char **argv;
     zds obuf;
-} zokClient;
+} context;
 
 /* define function pointer */
 typedef void commandFunc(zokClient *c);

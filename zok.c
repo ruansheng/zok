@@ -76,7 +76,7 @@ void initServer(zokServer *server) {
     server->event = (event *)malloc(sizeof(event));
 }
 
-int zokStringToCommandArgv(zokClient *zc, int argc, char **argv) {
+int zokStringToCommandArgv(context *ctx, int argc, char **argv) {
     char *cmd;
     int len;
     len = zokStringToFormatCommandArgv(&cmd, argc, argv);
@@ -91,7 +91,7 @@ int zokStringToCommandArgv(zokClient *zc, int argc, char **argv) {
         printf("newlenzds alloc memory");
         return ZOK_COMMAND_ERR;
     }
-    zc->obuf = z;
+    ctx->obuf = z;
     free(cmd);
     return ZOK_COMMAND_OK;
 }
