@@ -15,7 +15,7 @@
 
 typedef struct context{
     int cid;
-    zds raw;
+    char *raw;
     int argc;
     char **argv;
     zds obuf;
