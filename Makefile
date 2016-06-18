@@ -37,6 +37,6 @@ install:
 	@echo copy files to target dir !
 
 clean:
-	@rm -rf zok-server zok-cli zok.o net.o zok-cli.o z_epoll.o
+	@rm -rf zok-server zok-cli zds.o util.o zok.o net.o zok-cli.o z_epoll.o
 	@echo doing clean files
 	@echo clean finished !
