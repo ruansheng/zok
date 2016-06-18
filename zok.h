@@ -13,6 +13,9 @@
 #define ZOK_OK 0
 #define ZOK_ERR -1
 
+#define ZOK_COMMAND_OK 0
+#define ZOK_COMMAND_ERR -1
+
 #include "version.h"
 #include "zds.h"
 #include "net.h"
