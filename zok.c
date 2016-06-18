@@ -79,7 +79,7 @@ void initServer(zokServer *server) {
 int zokStringToCommandArgv(zokClient *zc, int argc, char **argv) {
     char *cmd;
     int len;
-    len = zokFormatCommandArgvToString(&cmd, argc, argv);
+    len = zokStringToFormatCommandArgv(&cmd, argc, argv);
     if(len == -1) {
         printf("Out of memory");
         return ZOK_COMMAND_ERR;
