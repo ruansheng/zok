@@ -136,14 +136,12 @@ void refreshConnectPrompt() {
 }
 
 void initContext(context *ctx) {
-    if(ctx != NULL) {
-        ctx->cid = rand();
-        ctx->raw = NULL;
-        ctx->argc = 0;
-        ctx->argv = NULL;
-        ctx->obuf = zdsempty();
-    }
     ctx = (context *)malloc(sizeof(context));
+    ctx->cid = rand();
+    ctx->raw = NULL;
+    ctx->argc = 0;
+    ctx->argv = NULL;
+    ctx->obuf = zdsempty();
     if(ctx == NULL) {
         printf("malloc context fail\n");
         exit(0);
