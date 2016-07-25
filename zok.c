@@ -5,9 +5,9 @@
 #include "zok.h"
 
 /* global var */
-zokServer server;
+struct zokServer server;
 
-zCommand commandTables[] ={
+zokCommand commandTables[] ={
     {"set", setCommand},
     {"get", getCommand},
     {"del", delCommand},
@@ -63,65 +63,6 @@ void daemonize() {
     server.pid = pid;
 }
 
-/**
- * initServer
- */
-void initServer(zokServer *server) {
-    server->pid = getpid();
-    server->zokaddr = (zokAddr *)malloc(sizeof(zokAddr));
-    server->zokaddr->host = ZOK_HOST;
-    server->zokaddr->port = ZOK_PORT;
-    server->daemonize = 0;
-    server->conf_filename = NULL;
-    server->event = (event *)malloc(sizeof(event));
-}
-
-int zokStringToCommandArgv(context *ctx, int argc, char **argv) {
-    char *cmd;
-    int len;
-    len = zokStringToFormatCommandArgv(&cmd, argc, argv);
-    if(len == -1) {
-        printf("Out of memory");
-        return ZOK_COMMAND_ERR;
-    }
-
-    zds z = newlenzds(cmd, len);
-    if(z == NULL) {
-        free(cmd);
-        printf("newlenzds alloc memory");
-        return ZOK_COMMAND_ERR;
-    }
-    ctx->obuf = z;
-    free(cmd);
-    return ZOK_COMMAND_OK;
-}
-
-int zokStringToFormatCommandArgv(char **target, int argc, char **argv) {
-    int i, total;
-
-    total = 1 + intlen(argc) + 2; /*  add first line "*3\r\n" string length  */
-    for(i = 0; i < argc; i++) {
-        int len = strlen(argv[i]);
-        total += bulklen(len); /*  add an cmd item two line "$3\r\n" and "set\r\n" string length  */
-    }
-
-    char *cmd = (char *)malloc(total + 1); /*  add total cmd + '\0' string length  */
-    if(cmd == NULL) return -1;
-
-    int pos = sprintf(cmd, "*%d\r\n", argc);
-    for(i = 0; i < argc; i++) {
-        int len = strlen(argv[i]);
-        pos += sprintf(cmd + pos, "$%d\r\n", len);
-        memcpy(cmd + pos, argv[i], len);
-        pos += len;
-        cmd[pos++] = '\r';
-        cmd[pos++] = '\n';
-    }
-    cmd[pos] = '\0';
-    *target = cmd;
-    return total;
-}
-
 void setCommand(context *c) {
 
 }
@@ -146,8 +87,71 @@ void infoCommand(context *c) {
 
 }
 
+/**
+ * initServer
+ */
+void initServer() {
+    server.pid = getpid();
+    server.zokaddr = (zokAddr *)malloc(sizeof(zokAddr));
+    server.zokaddr->host = ZOK_HOST;
+    server.zokaddr->port = ZOK_PORT;
+    server.daemonize = 0;
+    server.conf_filename = NULL;
+    server.event = (event *)malloc(sizeof(event));
+}
+
+/*
+int zokStringToCommandArgv(context *ctx, int argc, char **argv) {
+    char *cmd;
+    int len;
+    len = zokStringToFormatCommandArgv(&cmd, argc, argv);
+    if(len == -1) {
+        printf("Out of memory");
+        return ZOK_ERR;
+    }
+
+    zds z = newlenzds(cmd, len);
+    if(z == NULL) {
+        free(cmd);
+        printf("newlenzds alloc memory");
+        return ZOK_ERR;
+    }
+    ctx->obuf = z;
+    free(cmd);
+    return ZOK_OK;
+}
+*/
+
+/*
+int zokStringToFormatCommandArgv(char **target, int argc, char **argv) {
+    int i, total;
+
+    total = 1 + intlen(argc) + 2; //  add first line "*3\r\n" string length
+    for(i = 0; i < argc; i++) {
+        int len = strlen(argv[i]);
+        total += bulklen(len); // add an cmd item two line "$3\r\n" and "set\r\n" string length
+    }
+
+    char *cmd = (char *)malloc(total + 1); //  add total cmd + '\0' string length
+    if(cmd == NULL) return -1;
+
+    int pos = sprintf(cmd, "*%d\r\n", argc);
+    for(i = 0; i < argc; i++) {
+        int len = strlen(argv[i]);
+        pos += sprintf(cmd + pos, "$%d\r\n", len);
+        memcpy(cmd + pos, argv[i], len);
+        pos += len;
+        cmd[pos++] = '\r';
+        cmd[pos++] = '\n';
+    }
+    cmd[pos] = '\0';
+    *target = cmd;
+    return total;
+}
+*/
+
 int main(int argc, char **argv) {
-    initServer(&server);
+    initServer();
     if(argc >= 2) {
         if(strcmp(argv[1] ,"-v") == 0 || strcmp(argv[1] ,"--version") == 0) {
             version();
@@ -155,7 +159,7 @@ int main(int argc, char **argv) {
         if(strcmp(argv[1] ,"-h") == 0 || strcmp(argv[1] ,"--help") == 0) {
             usage();
         }
-
+        /*
         int i;
         for(i = 1; i < argc; i++) {
             if(argc == (i + 1)) {
@@ -181,13 +185,19 @@ int main(int argc, char **argv) {
                 exit(1);
             }
         }
+         */
     }
 
+    /*
     if(server.daemonize) {
         daemonize();
     }
 
-    netMain(server.zokaddr, server.event);
+    for(;;) {
 
+    }
+
+    //netMain(server.zokaddr, server.event);
+    */
     return ZOK_OK;
 }

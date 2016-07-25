@@ -13,13 +13,13 @@
 #define ZOK_OK 0
 #define ZOK_ERR -1
 
-#define ZOK_COMMAND_OK 0
-#define ZOK_COMMAND_ERR -1
+#define ZOK_HOST "127.0.0.1"
+#define ZOK_PORT 10032
 
 #include "version.h"
 #include "zds.h"
-#include "net.h"
-#include "log.h"
+//#include "net.h"
+//#include "log.h"
 #include "util.h"
 
 typedef struct Object{
@@ -40,15 +40,28 @@ typedef void commandFunc(context *c);
 typedef struct{
     char *name;
     commandFunc *func; /* function pointer */
-}zCommand;
+}zokCommand;
 
-typedef struct{
+/* zokAddr */
+typedef struct zokAddr {
+    char *host;
+    int port;
+} zokAddr;
+
+/* event */
+typedef struct event {
+    int fd;
+} event;
+
+struct zokServer{
     pid_t pid;
     zokAddr *zokaddr;
     event *event;
     int daemonize;
     char *conf_filename;
-} zokServer;
+};
+
+extern struct zokServer server;
 
 /* exec command function */
 /* string */
@@ -61,4 +74,4 @@ void ttlCommand(context *c);
 void pingCommand(context *c);
 void infoCommand(context *c);
 
-void initServer(zokServer *server);
+void initServer();
